@@ -1,3 +1,3 @@
-# canvas-painting
+# webgl-painting
 
-A simple painting app using HTML canvas
+A simple painting app using WebGL
