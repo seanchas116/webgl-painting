@@ -12,8 +12,9 @@ class PaintCanvas
     @canvas.addEventListener 'mousedown', @onMouseDown.bind(this)
     @canvas.addEventListener 'mouseup', @onMouseUp.bind(this)
 
-    #@canvas.addEventListener 'touchmove', (ev) =>
-    #  console.log "touch move"
+    @canvas.addEventListener 'touchmove', @onTouchMove.bind(this)
+    @canvas.addEventListener 'touchstart', @onTouchStart.bind(this)
+    @canvas.addEventListener 'touchend', @onTouchEnd.bind(this)
 
   begin: (x, y) ->
     @lastX = x
@@ -49,6 +50,23 @@ class PaintCanvas
   onMouseUp: (ev) ->
     #console.log "up at #{ev.clientX}, #{ev.clientY}"
     @end()
+
+  onTouchMove: (ev) ->
+    if @pressed && ev.touches.length == 1
+      touch = ev.touches[0]
+      @stroke(touch.clientX, touch.clientY)
+    ev.preventDefault()
+
+  onTouchStart: (ev) ->
+    if ev.touches.length == 1
+      touch = ev.touches[0]
+      @begin(touch.clientX, touch.clientY)
+      ev.preventDefault()
+
+  onTouchEnd: (ev) ->
+    @end()
+    ev.preventDefault()
+
 
 init = ->
 
