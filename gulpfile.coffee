@@ -23,10 +23,10 @@ gulp.task 'watch', ->
       .pipe source('bundle.js')
       .pipe plumber
         errorHandler: notify.onError('Error: <%= error.message %>')
-      .pipe buffer()
-      .pipe sourcemaps.init(loadMaps: true)
-      .pipe uglify()
-      .pipe sourcemaps.write('./')
+      # .pipe buffer()
+      # .pipe sourcemaps.init(loadMaps: true)
+      # .pipe uglify()
+      # .pipe sourcemaps.write('./')
       .pipe notify("Build Finished")
       .pipe gulp.dest('./dist')
 

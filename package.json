@@ -23,6 +23,8 @@
     "watchify": "^2.2.1"
   },
   "dependencies": {
+    "lodash": "^2.4.1",
+    "three": "^0.69.0",
     "xtend": "^4.0.0"
   }
 }
