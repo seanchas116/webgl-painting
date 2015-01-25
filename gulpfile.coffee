@@ -11,6 +11,7 @@ browserify = require 'browserify'
 watchify = require 'watchify'
 sourcemaps = require 'gulp-sourcemaps'
 xtend = require 'xtend'
+deploy = require 'gulp-gh-pages'
 
 gulp.task 'watch', ->
   args = xtend watchify.args,
@@ -32,5 +33,21 @@ gulp.task 'watch', ->
 
   bundle()
   bundler.on 'update', bundle
+
+gulp.task 'release-bundle', ->
+  browserify './src/index.coffee'
+    .transform 'coffeeify'
+    .bundle()
+    .pipe source('bundle.js')
+    .pipe buffer()
+    .pipe sourcemaps.init(loadMaps: true)
+    .pipe uglify()
+    .pipe sourcemaps.write('./')
+    .pipe notify("Build Finished")
+    .pipe gulp.dest('./dist')
+
+gulp.task 'deploy', ['release-bundle'], ->
+  gulp.src './dist/**/*'
+    .pipe deploy()
 
 gulp.task 'default', ['watch']
