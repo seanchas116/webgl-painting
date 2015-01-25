@@ -1,12 +1,12 @@
 {
   "name": "webgl-painting",
   "version": "0.0.1",
-  "description": "",
+  "description": "A simple painting app using WebGL",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Ryohei Ikegami <iofg2100@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "browserify": "^8.1.1",
@@ -27,5 +27,13 @@
     "three": "^0.69.0",
     "xtend": "^4.0.0"
   },
-  "private": true
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seanchas116/webgl-painting.git"
+  },
+  "bugs": {
+    "url": "https://github.com/seanchas116/webgl-painting/issues"
+  },
+  "homepage": "https://github.com/seanchas116/webgl-painting"
 }
