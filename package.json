@@ -1,5 +1,5 @@
 {
-  "name": "canvas-painting",
+  "name": "webgl-painting",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -26,5 +26,6 @@
     "lodash": "^2.4.1",
     "three": "^0.69.0",
     "xtend": "^4.0.0"
-  }
+  },
+  "private": true
 }
