@@ -25,6 +25,7 @@ gulp.task 'watch', ->
       .pipe sourcemaps.init(loadMaps: true)
       .pipe uglify()
       .pipe sourcemaps.write('./')
+      .pipe notify("Build Finished")
       .pipe gulp.dest('./dist')
 
   bundle()
