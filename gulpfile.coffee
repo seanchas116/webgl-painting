@@ -1,3 +1,5 @@
+'use strict'
+
 gulp = require 'gulp'
 gutil = require 'gutil'
 plumber = require 'gulp-plumber'
