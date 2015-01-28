@@ -16,7 +16,7 @@ class PaintCanvas
     @camera = new THREE.OrthographicCamera(0, @width, @height, 0, -10, 1000);
     #@camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-    @renderer = new THREE.WebGLRenderer()
+    @renderer = new THREE.WebGLRenderer(devicePixelRatio: window.devicePixelRatio || 1)
     @renderer.setSize @width, @height
     @renderer.setClearColor 0xffffff
     @element = @renderer.domElement
@@ -55,7 +55,7 @@ class PaintCanvas
 
     @vertexCount = 0
 
-    material = new THREE.LineBasicMaterial(color: 0x000000, linewidth: 2)
+    material = new THREE.LineBasicMaterial(color: 0x000000, linewidth: 10)
     line = new THREE.Line(@geometry, material)
     @scene.add(line)
 
