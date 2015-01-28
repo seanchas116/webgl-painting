@@ -6,6 +6,10 @@ _ = require 'lodash'
 MAX_VERTEX_COUNT = 256
 HIDDEN_VERTEX_Z = -1000000
 
+DEVICE_PIXEL_RATIO = window.devicePixelRatio || 1
+
+LINE_MATERIAL = new THREE.LineBasicMaterial(color: 0x000000, linewidth: 2 * DEVICE_PIXEL_RATIO)
+
 class PaintCanvas
 
   constructor: ->
@@ -14,27 +18,11 @@ class PaintCanvas
 
     @scene = new THREE.Scene()
     @camera = new THREE.OrthographicCamera(0, @width, @height, 0, -10, 1000);
-    #@camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-    @renderer = new THREE.WebGLRenderer(devicePixelRatio: window.devicePixelRatio || 1)
+    @renderer = new THREE.WebGLRenderer(antialias: true, devicePixelRatio: DEVICE_PIXEL_RATIO)
     @renderer.setSize @width, @height
     @renderer.setClearColor 0xffffff
     @element = @renderer.domElement
-
-    # geometry = new THREE.Geometry()
-    # geometry.vertices.push(new THREE.Vector3(0, 0, 0))
-    # geometry.vertices.push(new THREE.Vector3(-100, -100, 0))
-    # geometry.vertices.push(new THREE.Vector3(-100, 100, 0))
-    # geometry.vertices.push(new THREE.Vector3(100, -100, 0))
-    # geometry.vertices.push(new THREE.Vector3(100, 100, 0))
-    # material = new THREE.LineBasicMaterial(color: 0x00ff00)
-    # line = new THREE.Line(geometry, material)
-    # @scene.add(line)
-
-    # geometry = new THREE.PlaneGeometry(100, 100)
-    # material = new THREE.MeshBasicMaterial(color: 0x00ff00)
-    # cube = new THREE.Mesh( geometry, material )
-    # @scene.add( cube )
 
     @element.addEventListener 'mousemove', @onMouseMove.bind(this)
     @element.addEventListener 'mousedown', @onMouseDown.bind(this)
@@ -55,8 +43,7 @@ class PaintCanvas
 
     @vertexCount = 0
 
-    material = new THREE.LineBasicMaterial(color: 0x000000, linewidth: 10)
-    line = new THREE.Line(@geometry, material)
+    line = new THREE.Line(@geometry, LINE_MATERIAL)
     @scene.add(line)
 
   addVertex: (vertex) ->
