@@ -4,6 +4,7 @@ THREE = require 'three'
 _ = require 'lodash'
 
 MAX_VERTEX_COUNT = 256
+HIDDEN_VERTEX_Z = -1000000
 
 class PaintCanvas
 
@@ -17,6 +18,7 @@ class PaintCanvas
 
     @renderer = new THREE.WebGLRenderer()
     @renderer.setSize @width, @height
+    @renderer.setClearColor 0xffffff
     @element = @renderer.domElement
 
     # geometry = new THREE.Geometry()
@@ -49,33 +51,41 @@ class PaintCanvas
     @geometry.dynamic = true
 
     _.times MAX_VERTEX_COUNT, =>
-      @geometry.vertices.push(new THREE.Vector3(0, 0, -1000000))
+      @geometry.vertices.push(new THREE.Vector3(0, 0, HIDDEN_VERTEX_Z))
 
     @vertexCount = 0
 
-    material = new THREE.LineBasicMaterial(color: 0xffffff, linewidth: 2)
+    material = new THREE.LineBasicMaterial(color: 0x000000, linewidth: 2)
     line = new THREE.Line(@geometry, material)
     @scene.add(line)
 
-  addVertex: (x, y) ->
-    if MAX_VERTEX_COUNT <= @vertexCount
+  addVertex: (vertex) ->
+    if !@geometry
       @newGeometry()
 
-    @geometry.vertices[@vertexCount] = new THREE.Vector3(x, y, 0)
+    if MAX_VERTEX_COUNT <= @vertexCount
+      last = @geometry.vertices[@vertexCount - 1]
+      @newGeometry()
+      @geometry.vertices[0] = last
+
+    @geometry.vertices[@vertexCount] = vertex
     @vertexCount += 1
 
     @geometry.verticesNeedUpdate = true
 
+  splitVertex: ->
+    @addVertex(new THREE.Vector3(0, 0, HIDDEN_VERTEX_Z))
+
   begin: (x, y) ->
     @pressed = true
-    @newGeometry()
-    @addVertex(x, y)
+    @addVertex(new THREE.Vector3(x, y, 0))
 
   end: ->
+    @splitVertex()
     @pressed = false
 
   stroke: (x, y) ->
-    @addVertex(x, y)
+    @addVertex(new THREE.Vector3(x, y, 0))
     @render()
 
   render: ->
