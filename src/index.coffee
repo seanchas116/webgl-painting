@@ -7,8 +7,9 @@ MAX_VERTEX_COUNT = 256
 HIDDEN_VERTEX_Z = -1000000
 
 DEVICE_PIXEL_RATIO = window.devicePixelRatio || 1
+#DEVICE_PIXEL_RATIO = 1
 
-LINE_MATERIAL = new THREE.LineBasicMaterial(color: 0x000000, linewidth: 2 * DEVICE_PIXEL_RATIO)
+LINE_MATERIAL = new THREE.LineBasicMaterial(color: 0xFFFFFF, linewidth: 5 * DEVICE_PIXEL_RATIO)
 
 class PaintCanvas
 
@@ -20,6 +21,7 @@ class PaintCanvas
     @camera = new THREE.OrthographicCamera(0, @width, @height, 0, -10, 1000);
 
     @renderer = new THREE.WebGLRenderer(antialias: true, devicePixelRatio: DEVICE_PIXEL_RATIO)
+    @renderer.autoClear = false
     @renderer.setSize @width, @height
     @renderer.setClearColor 0xffffff
     @element = @renderer.domElement
