@@ -1,0 +1,18 @@
+{
+  "name": "webgl-painting",
+  "version": "0.0.1",
+  "homepage": "https://github.com/seanchas116/webgl-painting",
+  "authors": [
+    "Ryohei Ikegami <iofg2100@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {}
+}

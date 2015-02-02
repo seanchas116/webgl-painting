@@ -12,22 +12,33 @@ watchify = require 'watchify'
 sourcemaps = require 'gulp-sourcemaps'
 xtend = require 'xtend'
 deploy = require 'gulp-gh-pages'
+tslint = require 'gulp-tslint'
 
-gulp.task 'watch', ->
+notifyError = ->
+  plumber
+    errorHandler: notify.onError('Error: <%= error.message %>')
+
+gulp.task 'lint', ->
+  gulp.src './src/**/*.ts'
+    .pipe notifyError()
+    .pipe tslint()
+    .pipe tslint.report('verbose')
+    .pipe notify('Lint Finished')
+
+gulp.task 'watch-lint', ['lint'], ->
+  gulp.watch './src/**/*.ts', ['lint']
+
+gulp.task 'watch-bundle', ->
   args = xtend watchify.args,
     debug: true
-  bundler = watchify browserify './src/index.coffee', args
-  bundler.transform 'coffeeify'
+  bundler = watchify browserify './src/index.ts', args
+    .plugin 'tsify', noImplicitAny: true
+    .transform 'debowerify'
 
   bundle = ->
     bundler.bundle()
+      .on 'error', notify.onError('Error: <%= error.message %>')
       .pipe source('bundle.js')
-      .pipe plumber
-        errorHandler: notify.onError('Error: <%= error.message %>')
-      # .pipe buffer()
-      # .pipe sourcemaps.init(loadMaps: true)
-      # .pipe uglify()
-      # .pipe sourcemaps.write('./')
       .pipe notify("Build Finished")
       .pipe gulp.dest('./dist')
 
@@ -35,8 +46,9 @@ gulp.task 'watch', ->
   bundler.on 'update', bundle
 
 gulp.task 'release-bundle', ->
-  browserify './src/index.coffee'
-    .transform 'coffeeify'
+  browserify './src/index.ts'
+    .plugin 'tsify', noImplicitAny: true
+    .transform 'debowerify'
     .bundle()
     .pipe source('bundle.js')
     .pipe buffer()
@@ -50,4 +62,4 @@ gulp.task 'deploy', ['release-bundle'], ->
   gulp.src './dist/**/*'
     .pipe deploy()
 
-gulp.task 'default', ['watch']
+gulp.task 'default', ['watch-lint', 'watch-bundle']
